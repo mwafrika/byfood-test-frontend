@@ -1,7 +1,8 @@
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { FaEye, FaEdit, FaTrashAlt } from "react-icons/fa";
 import { useBookContext } from "../contexts/BookContext";
+import EditBookModal from "./EditBookForm";
 
 interface Book {
   id: string;
@@ -12,8 +13,13 @@ interface Book {
 
 const BookCard = ({ title, author, year, id }: Book) => {
   const { deleteBook } = useBookContext();
+  const [showEditModal, setShowEditModal] = useState(false);
   const handleDelete = () => {
     deleteBook(id);
+  };
+
+  const handleEdit = () => {
+    setShowEditModal(true);
   };
 
   console.log(title, author, year, id, "title, author, year, id ");
@@ -29,11 +35,14 @@ const BookCard = ({ title, author, year, id }: Book) => {
             <FaEye className="mr-2" /> View
           </button>
         </Link>
-        <Link href={`/edit-book/${id}`}>
-          <button className="bg-primary text-white py-2 px-4 rounded flex items-center justify-center">
-            <FaEdit className="mr-2" /> Edit
-          </button>
-        </Link>
+
+        <button
+          className="bg-primary text-white py-2 px-4 rounded flex items-center justify-center"
+          onClick={handleEdit}
+        >
+          <FaEdit className="mr-2" /> Edit
+        </button>
+
         <button
           className="bg-red-500 text-white py-2 px-4 rounded flex items-center justify-center"
           onClick={handleDelete}
@@ -41,6 +50,12 @@ const BookCard = ({ title, author, year, id }: Book) => {
           <FaTrashAlt className="mr-2" /> Delete
         </button>
       </div>
+      {showEditModal && (
+        <EditBookModal
+          book={{ id, title, author, year }}
+          closeModal={() => setShowEditModal(false)}
+        />
+      )}
     </div>
   );
 };
