@@ -42,6 +42,7 @@ export const BookProvider = ({ children }: { children: ReactNode }) => {
   });
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
   const fetchBooks = async (
     page: number = 1,
     pageSize: number = 6,
