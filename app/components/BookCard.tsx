@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { FaEye, FaEdit, FaTrashAlt } from "react-icons/fa";
 import { useBookContext } from "../contexts/BookContext";
 import EditBookModal from "./EditBookForm";
+import ConfirmationDialog from "./ConfirmDeleteDialog";
 
 interface Book {
   id: string;
@@ -14,15 +15,24 @@ interface Book {
 const BookCard = ({ title, author, year, id }: Book) => {
   const { deleteBook } = useBookContext();
   const [showEditModal, setShowEditModal] = useState(false);
-  const handleDelete = () => {
-    deleteBook(id);
-  };
+  const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
 
   const handleEdit = () => {
     setShowEditModal(true);
   };
 
-  console.log(title, author, year, id, "title, author, year, id ");
+  const handleDelete = () => {
+    setShowConfirmationDialog(true);
+  };
+
+  const confirmDelete = () => {
+    deleteBook(id);
+    setShowConfirmationDialog(false);
+  };
+
+  const cancelDelete = () => {
+    setShowConfirmationDialog(false);
+  };
 
   return (
     <div className="border p-4 rounded shadow-md flex flex-col">
@@ -54,6 +64,14 @@ const BookCard = ({ title, author, year, id }: Book) => {
         <EditBookModal
           book={{ id, title, author, year }}
           closeModal={() => setShowEditModal(false)}
+        />
+      )}
+
+      {showConfirmationDialog && (
+        <ConfirmationDialog
+          message="Are you sure you want to delete this book?"
+          onConfirm={confirmDelete}
+          onCancel={cancelDelete}
         />
       )}
     </div>
