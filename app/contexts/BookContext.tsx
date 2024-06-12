@@ -9,11 +9,10 @@ import React, {
 } from "react";
 
 interface Book {
-  id: string;
+  id?: string;
   title: string;
   author: string;
   year: number;
-  image: string;
 }
 
 interface Pagination {

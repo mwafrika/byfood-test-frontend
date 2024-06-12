@@ -16,8 +16,10 @@ const BookCard = ({ title, author, year, id }: Book) => {
     deleteBook(id);
   };
 
+  console.log(title, author, year, id, "title, author, year, id ");
+
   return (
-    <div key={id} className="border p-4 rounded shadow-md flex flex-col">
+    <div className="border p-4 rounded shadow-md flex flex-col">
       <h2 className="text-xl font-semibold mb-2">{title}</h2>
       <p className="text-gray-700 mb-1">Author: {author}</p>
       <p className="text-gray-700 mb-4">Year: {year}</p>

@@ -4,24 +4,36 @@ import { useBookContext } from "@/app/contexts/BookContext";
 import Link from "next/link";
 import { FaEdit, FaTrashAlt, FaPlus, FaEye } from "react-icons/fa";
 import BookCard from "../components/BookCard";
+import AddBookModal from "../components/AddBookForm";
 
 const Dashboard = () => {
-  const { books, fetchBooks, deleteBook, pagination } = useBookContext();
+  const { books, fetchBooks, pagination } = useBookContext();
   const [term, setTerm] = useState<string>("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     fetchBooks(1, 6, term);
   }, [term]);
 
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <div className="container mx-auto px-4">
       <h1 className="text-3xl font-bold mb-4">Library Dashboard</h1>
       <div className="flex justify-end mb-4">
-        <Link href="/add-book">
-          <button className="bg-primary text-white py-2 px-4 rounded flex items-center">
-            <FaPlus className="mr-2" /> Add Book
-          </button>
-        </Link>
+        <button
+          className="bg-primary text-white py-2 px-4 rounded flex items-center"
+          onClick={handleOpenModal}
+        >
+          <FaPlus className="mr-2" /> Add Book
+        </button>
+        <AddBookModal isOpen={isModalOpen} onClose={handleCloseModal} />
       </div>
       <input
         type="text"
