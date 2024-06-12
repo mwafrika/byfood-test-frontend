@@ -16,25 +16,44 @@ interface Book {
   image: string;
 }
 
+interface Pagination {
+  page: number;
+  total_count: number;
+  // pageSize: number;
+  // totalItems: number;
+}
+
 interface BookContextType {
   books: Book[];
+  pagination: Pagination | null;
   addBook: (book: Book) => void;
   editBook: (book: Book) => void;
   deleteBook: (id: string) => void;
-  fetchBooks: () => void;
+  fetchBooks: (page?: number, pageSize?: number, term?: string) => void;
 }
 
 const BookContext = createContext<BookContextType | undefined>(undefined);
 
 export const BookProvider = ({ children }: { children: ReactNode }) => {
   const [books, setBooks] = useState<Book[]>([]);
+  const [pagination, setPagination] = useState<Pagination>({
+    page: 1,
+    total_count: 1,
+  });
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const fetchBooks = async () => {
+  const fetchBooks = async (
+    page: number = 1,
+    pageSize: number = 6,
+    term: string = ""
+  ) => {
     try {
       setLoading(true);
-      const response = await axiosInstance.get("/books");
-      setBooks(response.data);
+      const response = await axiosInstance.get(
+        `/books?page=${page}&pageSize=${pageSize}&term=${term}`
+      );
+      setBooks(response?.data?.data);
+      setPagination(response?.data?.pagination);
       setLoading(false);
     } catch (err) {
       setError("Failed to fetch books");
@@ -80,7 +99,7 @@ export const BookProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <BookContext.Provider
-      value={{ books, addBook, editBook, deleteBook, fetchBooks }}
+      value={{ books, pagination, addBook, editBook, deleteBook, fetchBooks }}
     >
       {children}
       {loading && <p>Loading...</p>}
