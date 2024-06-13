@@ -6,7 +6,7 @@ import EditBookModal from "./EditBookForm";
 import ConfirmationDialog from "./ConfirmDeleteDialog";
 
 interface Book {
-  id: string;
+  id?: string;
   title: string;
   author: string;
   year: number;
@@ -26,7 +26,7 @@ const BookCard = ({ title, author, year, id }: Book) => {
   };
 
   const confirmDelete = () => {
-    deleteBook(id);
+    deleteBook(id as string);
     setShowConfirmationDialog(false);
   };
 

@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { useBookContext } from "../contexts/BookContext";
 
 interface Book {
-  id: string;
+  id?: string;
   title: string;
   author: string;
   year: number;

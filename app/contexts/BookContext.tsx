@@ -67,7 +67,8 @@ export const BookProvider = ({ children }: { children: ReactNode }) => {
   const addBook = async (book: Book, resetForm: () => void) => {
     try {
       const response = await axiosInstance.post("/books", book);
-      setBooks((prevBooks) => [...prevBooks, response.data]);
+      setBooks((prevBooks) => [...prevBooks, response?.data?.data]);
+
       resetForm();
     } catch (err) {
       setError("Failed to add book");
@@ -82,7 +83,7 @@ export const BookProvider = ({ children }: { children: ReactNode }) => {
       );
       setBooks((prevBooks) =>
         prevBooks.map((book) =>
-          book.id === updatedBook.id ? response.data : book
+          book.id === updatedBook.id ? response?.data?.data : book
         )
       );
     } catch (err) {
