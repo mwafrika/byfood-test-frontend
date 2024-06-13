@@ -1,36 +1,131 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Library Management System
 
-## Getting Started
+## Overview
+The Library Management System is a powerful and flexible server application built with Go (Golang) and the Gin framework, designed to efficiently manage books. It provides a RESTful API for performing various book-related operations such as adding, updating, deleting, and retrieving books. Additionally, it offers functionality to process URLs for redirection and canonicalization.
 
-First, run the development server:
+## Live Server for the project
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+### [Click here to access the Live site and enjoy testing](https://library-manage-systeme.vercel.app/) 
+
+## Table of Contents
+- [Features]()
+- [Installation]()
+- [Configuration]()
+- [Running the Application]()
+- [Screenshots]()
+- [Project Structure]()
+- [Endpoint Usage]()
+- [Development]()
+
+## Features
+- **Dashboard**: Lists all books with options to add, edit, view in detail, and delete books.
+- **Forms**: For adding new books and editing existing ones.
+- **Book Entry**: Displays basic information such as title, author, and year of publication.
+- **Modal Dialogs**: Used for form submissions to enhance user experience.
+- **State Management**: Utilized Context API to manage state across components.
+- **Client-Side Validation**: Includes visual feedback for required fields.
+- **Controlled Components**: Used for form inputs to handle form data.
+- **Dynamic Routing**: Set up for viewing individual book details.
+- **Error Handling**: Provides user-friendly messages for network issues and form errors.
+
+## Installation
+### Prerequisites
+- Node.js (>= 14.x.x)
+- npm or yarn
+
+## Steps
+1. Clone the repository:
+```js
+git clone https://github.com/mwafrika/byfood-test-frontend.git
+cd byfood-test-frontend
+```
+2. Install dependencies:
+```js
+npm install
+```
+Or
+
+```js
+yarn install
+```
+## Configuration
+1. Create a .env file in the root directory and add necessary environment variables
+```js
+NEXT_PUBLIC_API_URL=http://localhost:7000/api
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Running the Application
+```js
+npm run dev
+```
+Or
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```js
+yarn dev
+```
+2. Open your browser and navigate to http://localhost:3000
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Project Structure
+```js
+.
+├── app
+│   ├── components
+│   │   ├── AddBookForm.tsx
+│   │   ├── BookCard.tsx
+│   │   ├── ConfirmDeleteDialog.tsx
+│   │   ├── EditBookForm.tsx
+│   │   └── Spinner.tsx
+│   ├── contexts
+│   │   └── BookContext.tsx
+│   ├── dashboard
+│   │   ├── books
+│   │   │   └── [id]
+│   │   │       └── page.tsx
+│   │   └── page.tsx
+│   ├── fetcher
+│   │   └── api.tsx
+│   ├── globals.css
+│   ├── layout.tsx
+│   └── page.tsx
+├── public
+├── .eslintrc.json
+├── .gitignore
+├── next.config.mjs
+├── package-lock.json
+├── package.json
+├── postcss.config.ts
+├── tsconfig.json
+└── tailwindcss.config.ts
+```
 
-## Learn More
+## Screenshots
 
-To learn more about Next.js, take a look at the following resources:
+### 1. Home Page
+![](./public/home.png)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 2. Dashboard with the list of books with pagination and search input
+![](./public/dashboard.png)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### 3. Searching books by title, author or year of publication 
+![](./public/search.png)
 
-## Deploy on Vercel
+### 4. Modal to add New Book
+![](./public/newBook.png)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 5. Modal to edit an existing Book
+![](./public/editBook.png)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### 6. Confirmation dialog to delete a book
+![](./public/confirmDelete.png)
+
+
+## Endpoint Usage
+
+### API Endpoints
+
+All the information about the endpoints can be found [here on Live Server](https://reliable-germana-mwafrika-f5c060f5.koyeb.app/api/docs/index.html#/)
+or [To the backeck repository for this project](https://github.com/mwafrika/byfood-test-backend)
+
+## Styling
+Configuration is handled in tailwind.config.js and imported in app/tailwind.css
+
