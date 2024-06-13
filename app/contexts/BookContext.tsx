@@ -1,5 +1,6 @@
 "use client";
 import axiosInstance from "@/app/fetcher/api";
+import { toast } from "react-toastify";
 import React, {
   createContext,
   useState,
@@ -19,8 +20,6 @@ interface Book {
 interface Pagination {
   page: number;
   total_count: number;
-  // pageSize: number;
-  // totalItems: number;
 }
 
 interface BookContextType {
@@ -43,7 +42,6 @@ export const BookProvider = ({ children }: { children: ReactNode }) => {
     total_count: 1,
   });
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
 
   const fetchBooks = async (
     page: number = 1,
@@ -58,8 +56,8 @@ export const BookProvider = ({ children }: { children: ReactNode }) => {
       setBooks(response?.data?.data);
       setPagination(response?.data?.pagination);
       setLoading(false);
-    } catch (err) {
-      setError("Failed to fetch books");
+    } catch (err: any) {
+      toast.error(err.response.data.error);
       setLoading(false);
     }
   };
@@ -67,11 +65,12 @@ export const BookProvider = ({ children }: { children: ReactNode }) => {
   const addBook = async (book: Book, resetForm: () => void) => {
     try {
       const response = await axiosInstance.post("/books", book);
+      console.log(response.status, "Response", response.status);
       setBooks((prevBooks) => [...prevBooks, response?.data?.data]);
-
+      toast.success(response?.data?.message);
       resetForm();
-    } catch (err) {
-      setError("Failed to add book");
+    } catch (err: any) {
+      toast.error(err.response.data.error);
     }
   };
 
@@ -86,17 +85,20 @@ export const BookProvider = ({ children }: { children: ReactNode }) => {
           book.id === updatedBook.id ? response?.data?.data : book
         )
       );
-    } catch (err) {
-      setError("Failed to update book");
+
+      toast.success(response?.data?.message);
+    } catch (err: any) {
+      toast.error(err.response.data.error);
     }
   };
 
   const deleteBook = async (id: string) => {
     try {
-      await axiosInstance.delete(`/books/${id}`);
+      const response = await axiosInstance.delete(`/books/${id}`);
       setBooks(books.filter((book) => book.id !== id));
-    } catch (err) {
-      setError("Failed to delete book");
+      toast.success(response?.data?.message);
+    } catch (err: any) {
+      toast.error(err.response.data.error);
     }
   };
 
@@ -104,8 +106,8 @@ export const BookProvider = ({ children }: { children: ReactNode }) => {
     try {
       const response = await axiosInstance.get(`/books/${id}`);
       return response.data;
-    } catch (err) {
-      setError("Failed to fetch book details");
+    } catch (err: any) {
+      toast.error(err.response.data.error);
       return undefined;
     }
   };
@@ -129,7 +131,6 @@ export const BookProvider = ({ children }: { children: ReactNode }) => {
     >
       {children}
       {loading && <Spinner />}
-      {error && <p>{error}</p>}
     </BookContext.Provider>
   );
 };
