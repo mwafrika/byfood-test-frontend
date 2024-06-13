@@ -12,9 +12,16 @@ const AddBookModal: React.FC<AddBookModalProps> = ({ isOpen, onClose }) => {
   const [author, setAuthor] = useState("");
   const [year, setYear] = useState("");
 
+  const resetForm = () => {
+    setTitle("");
+    setAuthor("");
+    setYear("");
+  };
+
   const handleAddBook = (e: React.FormEvent) => {
     e.preventDefault();
-    addBook({ title, author, year: parseInt(year, 10) });
+    const newBook = { title, author, year: Number(year) };
+    addBook(newBook, resetForm);
     onClose();
   };
 

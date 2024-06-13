@@ -6,13 +6,15 @@ import BookCard from "../../components/BookCard";
 import AddBookModal from "../../components/AddBookForm";
 
 const Dashboard = () => {
-  const { books, fetchBooks, pagination, loading } = useBookContext();
+  const { books, fetchBooks, pagination, editBook, addBook, loading } =
+    useBookContext();
   const [term, setTerm] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     fetchBooks(1, 6, term);
   }, [term]);
+
 
   const handleOpenModal = () => {
     setIsModalOpen(true);

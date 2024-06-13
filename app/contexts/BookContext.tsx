@@ -26,7 +26,7 @@ interface Pagination {
 interface BookContextType {
   books: Book[];
   pagination: Pagination | null;
-  addBook: (book: Book) => void;
+  addBook: (book: Book, resetForm: () => void) => void;
   editBook: (book: Book) => void;
   deleteBook: (id: string) => void;
   fetchBooks: (page?: number, pageSize?: number, term?: string) => void;
@@ -64,10 +64,11 @@ export const BookProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const addBook = async (book: Book) => {
+  const addBook = async (book: Book, resetForm: () => void) => {
     try {
       const response = await axiosInstance.post("/books", book);
-      setBooks([...books, response.data]);
+      setBooks((prevBooks) => [...prevBooks, response.data]);
+      resetForm();
     } catch (err) {
       setError("Failed to add book");
     }
@@ -79,8 +80,10 @@ export const BookProvider = ({ children }: { children: ReactNode }) => {
         `/books/${updatedBook.id}`,
         updatedBook
       );
-      setBooks(
-        books.map((book) => (book.id === updatedBook.id ? response.data : book))
+      setBooks((prevBooks) =>
+        prevBooks.map((book) =>
+          book.id === updatedBook.id ? response.data : book
+        )
       );
     } catch (err) {
       setError("Failed to update book");
