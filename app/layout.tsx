@@ -17,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} box-border py-8`}>
+      <body className={`${inter.className} box-border`}>
         <BookProvider>{children}</BookProvider>
       </body>
     </html>

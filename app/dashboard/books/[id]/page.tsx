@@ -1,8 +1,10 @@
 "use client";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import Link from "next/link";
 import { useBookContext } from "@/app/contexts/BookContext";
+import EditBookModal from "@/app/components/EditBookForm";
+import { FaEdit } from "react-icons/fa";
+import Spinner from "@/app/components/Spinner";
 
 interface Book {
   id?: string;
@@ -13,11 +15,16 @@ interface Book {
 
 const BookDetailsPage = () => {
   const router = useRouter();
+  const [showEditModal, setShowEditModal] = useState(false);
   const pathname = usePathname();
   const id = pathname?.split("/")?.pop();
 
   const { singleBook } = useBookContext();
   const [book, setBook] = useState<Book | null>(null);
+
+  const handleEdit = () => {
+    setShowEditModal(true);
+  };
 
   useEffect(() => {
     if (id) {
@@ -30,18 +37,18 @@ const BookDetailsPage = () => {
   }, [id, singleBook]);
 
   if (!book) {
-    return <p>Loading...</p>;
+    return <Spinner />;
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <header className="bg-blue-600 text-white py-4">
+    <div className="min-h-screen flex flex-col bg-gray-100">
+      <header className="bg-secondary text-white py-4">
         <div className="container mx-auto px-4">
           <h1 className="text-3xl font-bold">Library</h1>
         </div>
       </header>
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto bg-white shadow-md rounded-lg p-6">
+      <div className="flex-grow container mx-auto px-4 py-8 flex justify-center items-center">
+        <div className="max-w-4xl w-3/5 mx-auto bg-white shadow-md rounded-lg p-6">
           <h1 className="text-3xl font-bold mb-4 text-center">{book.title}</h1>
           <div className="mb-4">
             <p className="text-gray-700 text-lg mb-2">
@@ -55,24 +62,38 @@ const BookDetailsPage = () => {
             </p>
           </div>
           <div className="mt-6 flex justify-center space-x-4">
-            <Link href={`/edit-book/${book.id}`}>
-              <button className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-6 rounded-lg flex items-center justify-center">
-                Edit
-              </button>
-            </Link>
-            <Link href="/books">
-              <button className="bg-gray-500 hover:bg-gray-700 text-white py-2 px-6 rounded-lg flex items-center justify-center">
-                Back to List
-              </button>
-            </Link>
+            <button
+              className="bg-primary text-white py-2 px-4 rounded flex items-center justify-center"
+              onClick={handleEdit}
+            >
+              <FaEdit className="mr-2" /> Edit
+            </button>
+
+            <button
+              className="bg-gray-500 hover:bg-gray-700 text-white py-2 px-6 rounded-lg flex items-center justify-center"
+              onClick={() => router.back()}
+            >
+              Back to List
+            </button>
           </div>
         </div>
       </div>
-      <footer className="bg-blue-600 text-white py-4">
+      <footer className="bg-secondary text-white py-4">
         <div className="container mx-auto px-4 text-center">
           <p>&copy; 2024 Library. All rights reserved.</p>
         </div>
       </footer>
+      {showEditModal && (
+        <EditBookModal
+          book={{
+            id: book.id as string,
+            title: book.title,
+            author: book.author,
+            year: book.year,
+          }}
+          closeModal={() => setShowEditModal(false)}
+        />
+      )}
     </div>
   );
 };

@@ -7,6 +7,7 @@ import React, {
   ReactNode,
   useEffect,
 } from "react";
+import Spinner from "../components/Spinner";
 
 interface Book {
   id?: string;
@@ -30,6 +31,7 @@ interface BookContextType {
   deleteBook: (id: string) => void;
   fetchBooks: (page?: number, pageSize?: number, term?: string) => void;
   singleBook: (id: string) => Promise<Book | undefined>;
+  loading: boolean;
 }
 
 const BookContext = createContext<BookContextType | undefined>(undefined);
@@ -118,10 +120,11 @@ export const BookProvider = ({ children }: { children: ReactNode }) => {
         editBook,
         deleteBook,
         fetchBooks,
+        loading,
       }}
     >
       {children}
-      {loading && <p>Loading...</p>}
+      {loading && <Spinner />}
       {error && <p>{error}</p>}
     </BookContext.Provider>
   );

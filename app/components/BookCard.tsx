@@ -40,7 +40,7 @@ const BookCard = ({ title, author, year, id }: Book) => {
       <p className="text-gray-700 mb-1">Author: {author}</p>
       <p className="text-gray-700 mb-4">Year: {year}</p>
       <div className="flex flex-col sm:flex-row sm:justify-between mt-auto gap-2">
-        <Link href={`/books/${id}`}>
+        <Link href={`/dashboard/books/${id}`}>
           <button className="bg-secondary text-white py-2 px-4 rounded flex items-center justify-center">
             <FaEye className="mr-2" /> View
           </button>
