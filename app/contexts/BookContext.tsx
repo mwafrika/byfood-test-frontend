@@ -29,6 +29,7 @@ interface BookContextType {
   editBook: (book: Book) => void;
   deleteBook: (id: string) => void;
   fetchBooks: (page?: number, pageSize?: number, term?: string) => void;
+  singleBook: (id: string) => Promise<Book | undefined>;
 }
 
 const BookContext = createContext<BookContextType | undefined>(undefined);
@@ -93,13 +94,31 @@ export const BookProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const singleBook = async (id: string): Promise<Book | undefined> => {
+    try {
+      const response = await axiosInstance.get(`/books/${id}`);
+      return response.data;
+    } catch (err) {
+      setError("Failed to fetch book details");
+      return undefined;
+    }
+  };
+
   useEffect(() => {
     fetchBooks();
   }, []);
 
   return (
     <BookContext.Provider
-      value={{ books, pagination, addBook, editBook, deleteBook, fetchBooks }}
+      value={{
+        singleBook,
+        books,
+        pagination,
+        addBook,
+        editBook,
+        deleteBook,
+        fetchBooks,
+      }}
     >
       {children}
       {loading && <p>Loading...</p>}
